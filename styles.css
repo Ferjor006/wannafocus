@@ -1,0 +1,668 @@
+/* GLOBALS */
+:root{
+    --principal_web_color: #852BBC; /* Morado por ejemplo */
+    --second_web_color: #151627; /* Color acompañante, segundo color más visible, como negro */
+    --third_web_color: #F2F3FF; /* Letras...SVGs... como el blanco*/
+    --secondVariant_web_color: #1d1f35; /* Variante del segundo principal, como otro negro */
+    --thirdVariant_web_color: #a3a3a3; /* Variante del tercer color, como otro blanco */
+    --forBoxShadow_color: rgb(0, 0, 0); 
+}
+*{
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+h1{
+    font-family: sans-serif;
+    color: var(--principal_web_color);
+    padding-bottom: 1rem;
+}
+
+/* SECTIONS 1 and 2 */
+#section_one{
+    background-color: var(--second_web_color);
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+#section_two{ /* Color sin Var */
+    position: absolute;
+    top: 0%;
+    z-index: 100;
+    height: 100vh;
+    width: 100%;
+    background-color: #15162685;
+    backdrop-filter: blur(20px);
+    visibility: hidden;
+}
+
+/* Section 1: No grid */
+nav ul{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    padding: 1em 1em 0.1em;
+
+    #svg_settings{
+        height: 1.4em;
+        width: 1.4em;
+        fill: var(--third_web_color);
+    }
+}
+.blob{
+    height: 100%;
+    width: 73%;
+    background-color: var(--principal_web_color);
+    animation: blobAnimation 5s linear infinite alternate-reverse;
+    filter: blur(15px);
+    position: absolute;
+    right: 1%;
+}
+
+/* GRID CONTAINER AND GRID SECTIONS */
+.gridContainer{
+    height: 90vh;
+    padding: 1em;
+    gap: 1em;
+
+    display: grid;
+    grid-template-columns: repeat(6, 0.5fr);
+    grid-template-rows: repeat(5, 0.5fr);
+
+    position: absolute;
+    z-index: 1;
+}
+.tasks_ordered_list{
+    grid-row: 1/3; 
+    grid-column: 1/5; 
+
+    /* overflow-x: hidden; */
+    /* color: var(--white); */
+}
+.distracting_notes{
+    grid-row: 3/6; 
+    grid-column: 1/5; 
+    /* color: var(--placeHolders_Color); */
+    
+    /* display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    overflow-x: hidden; */
+    /* word-break: keep-all; */
+}
+.timer{
+    grid-row: 1/6; 
+    grid-column: 5/7; 
+}
+.all_grid_sections{
+    background-color: var(--second_web_color);
+    border-radius: 1.4em;
+    padding: 1em;
+    box-shadow: 0 4px 3px var(--forBoxShadow_color), 0 -1px 3px var(--forBoxShadow_color);
+
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* A FONDO CON LOS GRIDS: tasks_ordered_list */
+.user_personal_list{ 
+    outline: none;
+    list-style: circle;
+    padding-left: 2.5em;
+    color: var(--third_web_color);
+    caret-color: var(--principal_web_color);
+    font-size: small;
+    min-height: 50%;
+}
+.PlaceHolder_notes{
+    color: var(--thirdVariant_web_color);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+/* Tasks Ordered List -> Childs ('li's') */
+
+/* A FONDO CON LOS GRIDS: distracting_notes -> Y SCROLLBARS */
+.distracting_notes_editable{
+    outline: none;
+    min-height: 100%;
+    color: var(--third_web_color);
+    caret-color: var(--principal_web_color);
+}
+.distracting_notes::-webkit-scrollbar, .tasks_ordered_list::-webkit-scrollbar{
+    width: 15px; 
+}
+.distracting_notes::-webkit-scrollbar-track, .tasks_ordered_list::-webkit-scrollbar-track{
+    background-color: var(--third_web_color);
+    border-radius: 1em;
+    margin-block: 1em;
+}
+.distracting_notes::-webkit-scrollbar-thumb, .tasks_ordered_list::-webkit-scrollbar-thumb{
+    background-color: var(--thirdVariant_web_color);
+    border-radius: 1em;
+}
+/* A FONDO CON LOS GRIDS: timer */
+#svgContainer{
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+}
+#timer_circle_indicator{
+    animation-name: rotate;
+    animation: 600s linear 1s 1 forwards; /* 600 */ /* 1s delay */
+    animation-play-state: paused;
+    transform-origin: center;
+}
+.minutes_indicatorContainer{
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -45%);
+}
+.minutes_indicatorContainer h2, h5{
+    color: var(--third_web_color);
+    font-family: "Orbitron", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;  
+}
+.startButtonFocus, .startButtonBreak{
+    position: absolute;
+    left: 50%;
+    bottom: 23%;
+    transform: translate(-50%, -23%);  
+    border: none;
+    background-color: var(--second_web_color);
+}
+.startButtonBreak{
+    visibility: hidden;
+}
+.startButtonFocus svg:hover, .startButtonBreak svg:hover{
+    fill: var(--principal_web_color);
+    cursor: pointer;
+}
+#upNextText{
+    position: absolute;
+    left: 50%;
+    bottom: 15%;
+    transform: translate(-50%, -15%);  
+    text-align: center;
+    font-size: 0.9rem;
+    font-family: sans-serif;
+    color: var(--thirdVariant_web_color);
+}
+.invisibleTwo{
+    opacity: 0;
+}
+/* SETTINGS */
+/* Buttons */
+.settingsContainer{
+    height: 30em;
+    width: 50em;
+    position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    display: flex;
+        align-items: center;
+    box-shadow: 0 4px 3px var(--forBoxShadow_color), 0 -1px 3px var(--forBoxShadow_color);
+    border-radius: 2em;
+}
+.edit_optionsSettings{
+    height: 30em;
+    width: 20%;
+    background-color: var(--second_web_color);
+    list-style: none;
+    border-radius: 2em 0em 0em 2em;
+}
+.settings_buttons{
+    padding: 1em;
+    width: 100%;
+    color: var(--third_web_color);
+    background-color: inherit; /* O transparent */
+    border-style: none;
+}
+.save_and_quit_button{
+    margin-top: 100%;
+    padding: 1em;
+    background-color: var(--principal_web_color);
+    border: none;
+}
+.settings_button_B1{ /* CHECK THIS */
+    background-color: var(--secondVariant_web_color); /* --secondVariant_web_color o red */
+}
+.edit_optionsSettings h3{
+    padding: 1em;
+    text-align: center;
+    font-family: sans-serif;
+    color: var(--principal_web_color);
+}
+#settings_internal_svg{
+    display: none;
+}
+/* Visualization */
+.visualizationSettings{
+    height: 30em;
+    width: 80%;
+    border-radius: 0em 2em 2em 0em;
+    overflow: hidden;
+}
+.allSettingsSections{
+    height: 100%;
+    width: 80%;
+    position: absolute;
+        right: 0;
+    border-radius: 0em 2em 2em 0em;
+    background-color: var(--secondVariant_web_color);
+    color: var(--third_web_color);
+}
+.settings_section_one{
+    /* visibility: hidden; */
+    display: flex;
+    justify-content: space-around;
+    padding: 1em;
+}
+.settings_section_two{
+    visibility: hidden;
+    display: flex;
+    justify-content: space-around;
+    align-items: start;
+    flex-wrap: wrap; 
+}
+.settings_section_three{
+    visibility: hidden;
+    padding: 1em;
+    text-align: center;
+}
+.sounds_user_form{
+    border: red solid 1px;
+
+}
+.sound_user_optionsC input[type="radio"] {
+    display: none;
+}
+.settings_section_four{
+    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1em;
+}
+.settings_section_four ul{
+    list-style: none;
+}
+.settings_section_four li{
+    color: var(--thirdVariant_web_color);
+    font-size: small;
+}
+.settings_section_four p, .settings_section_four a{
+    color: var(--third_web_color);
+    text-decoration: none;
+    font-size: small;
+}
+.settings_section_four a:hover{
+    color: var(--thirdVariant_web_color);
+}
+/* SETTINGS SECTIONS: Color Palettes */
+.color_options{
+    height: 5em;
+    width: 5em;
+    /* background-image: linear-gradient(red 50%, blue 50%); */
+    border-radius: 50%;
+    border: none;
+    margin: 1em;
+    padding: 1.5em; 
+    box-shadow: 0 4px 3px var(--forBoxShadow_color), 0 -1px 3px var(--forBoxShadow_color);
+}
+.colors_option_1{
+    background-image: linear-gradient(#FD8900 50%, #110D15 50%);
+}
+.colors_option_2{
+    background-image: linear-gradient(#852BBC 50%, #151626 50%);
+}
+.colors_option_3{
+    background-image: linear-gradient(#42FF00 50%, #0C001B 50%);
+}
+.colors_option_4{
+    background-image: linear-gradient(#9263DF 50%, #FFCFEF 50%);
+}
+.color_options:hover{
+    cursor: pointer;
+}
+
+/* Timer Alarm */
+.timerAlarm{
+    background-color: var(--third_web_color);
+    border-radius: 2em;
+    padding: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    z-index: 10;
+    transform: translate(-50%);
+    font-family: sans-serif;
+    color: var(--second_web_color);
+    visibility: hidden;
+    animation-name: alarmAnimation;
+    animation-duration: 5s;
+    animation-play-state: paused;
+    /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+}
+.timerAlarm svg{
+    margin-right: 1em;
+}
+.svg_pauseFocus{
+    display: none;
+}
+
+/* SETTINGS SECTIONS: Focus Timer and Break Timer */
+.timers_personal_ajust{
+    padding-top: 1em;
+    font-family: sans-serif;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+}
+.timerForm p{
+    color: var(--third_web_color);
+    margin-bottom: 1em;
+    font-size: 1.2em;
+}
+input[type="number"]{
+    height: 2em;
+    outline: none;
+    background-color: transparent;
+    color: var(--thirdVariant_web_color);
+    border: var(--principal_web_color) 1px solid;
+    border-radius: 1em;
+    font-size: 2em;
+    text-align: center;
+    padding: 1em;
+    margin-bottom: 1em;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none; /* Elimina los spinners */
+    margin: 0; /* Elimina el margen para el input */
+}
+#submit_focus_breakTimers{
+    padding: 0.5em;
+    border-style: none;
+    background-color: transparent;
+    color: var(--third_web_color); 
+}
+#submit_focus_breakTimers svg:hover{
+    fill: var(--principal_web_color);
+    cursor: pointer;
+}
+.the60min_advice{
+    font-size: 0.7em;
+    margin-top: 2em;
+}
+
+/* SETTINGS SECTIONS: Volume and Audio */
+.volume_Form{
+    display: flex;
+    flex-direction: column;
+}
+.tones_optionsForm label{
+    margin-right: 1em;
+}
+.tone_visualization_reference {
+    width: 48px;
+    height: 48px;
+    margin: auto;
+    position: relative;
+    margin-top: 4em;
+}
+.tone_visualization_reference:after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    /* background: var(--principal_web_color); */
+    background: linear-gradient(to right, var(--principal_web_color), var(--third_web_color));
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    /* animation-name: jumpSound; */
+    animation: jumpSound linear infinite;
+    animation-play-state: paused;
+}
+  
+/* Phone Users Advice */
+.phones_Note{
+    background-color: var(--third_web_color);
+    position: absolute;
+    top: 0%;
+    z-index: 20;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 1em;
+    text-align: center;
+    gap: 1em;
+    display: none;
+}
+/* ANIMATIONS/KEYFRAMES */
+@keyframes blobAnimation {
+    0%{
+        border-radius: 43% 57% 77% 23% / 58% 30% 70% 42%;
+        /* transform: translate(-100px, -50px) rotate(90deg); */
+    }
+    50%{
+        border-radius: 17% 83% 16% 84% / 25% 54% 46% 75% ;
+    }
+    100%{ 
+        border-radius: 50% 50% 33% 67% / 25% 54% 46% 75% ;
+        /* transform: translate(200px, 50px) rotate(-10deg); */
+
+    }
+}
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(-360deg);
+      }
+}
+@keyframes rotate2 {
+    0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(-360deg);
+      }
+}
+@keyframes alarmAnimation {
+    0%{
+        opacity: 0;
+    }
+    25%{
+        opacity: 100;
+    }
+
+}
+@keyframes jumpSound {
+    15% {
+        border-bottom-right-radius: 50%; 
+    }
+    25% {
+        transform: translateY(9px) rotate(22.5deg);
+    }
+    50% {
+        transform: translateY(18px) scale(1, .9) rotate(45deg);
+        border-bottom-right-radius: 40px;
+    }
+    75% {
+        transform: translateY(9px) rotate(67.5deg);
+    }
+    100% {
+        transform: translateY(0) rotate(90deg);
+    }
+}
+
+/* Responsive */
+/* Section 2 */
+@media (max-width: 850px) {
+    .settingsContainer{
+        height: 35em;
+        width: 40em;
+    }
+    .edit_optionsSettings{
+        height: 35em;
+        width: 20%;
+    }
+    .visualizationSettings{
+        height: 35em;
+        width: 80%;
+    }
+}
+@media (max-width: 675px){
+    .settingsContainer{
+        height: 100vh;
+        width: 100%;
+        border-radius: 0%;
+    }
+    .edit_optionsSettings{
+        height: 100vh;
+        width: 20%;
+        border-radius: 0%;
+    }
+    .visualizationSettings{
+        height: 100vh;
+        width: 80%;
+        
+    }
+    .allSettingsSections{
+        border-radius: 0%;
+    }
+}
+
+/* Section 1 */
+@media (max-width: 950px)  {
+    *{
+        overflow-x: hidden;
+    }
+    .tasks_ordered_list{
+        grid-row: 1/4; 
+        grid-column: 1/4; 
+    }
+    .distracting_notes{
+        grid-row: 4/6; 
+        grid-column: 1/4; 
+    }
+    .timer{
+        grid-row: 1/6; 
+        grid-column: 4/7; 
+    }
+
+
+} 
+@media (max-width: 650px){
+    .tasks_ordered_list{
+        grid-row: 1/4; 
+        grid-column: 1/4; 
+    }
+    .distracting_notes{
+        grid-row: 4/6; 
+        grid-column: 1/7; 
+    }
+    .timer{
+        grid-row: 1/4; 
+        grid-column: 4/7; 
+    }
+
+    #svgContainer{
+        height: 30vh;
+        width: auto;
+        margin-top: 1.5em;
+    }
+    .minutes_indicatorContainer{
+        font-size: 0.8rem;
+        left: 50%;
+        top: 41%;
+        transform: translate(-50%);
+
+    }
+    .startButtonFocus, .startButtonBreak{
+        left: 35%;
+        bottom: 10%;
+        transform: translate(-35%);  
+    }
+    #upNextText{
+        left: 60%;
+        bottom: 13%;
+        transform: translate(-60%);  
+        font-size: 0.7rem;
+        padding-left: 1em;
+    }
+    .PlaceHolder_notes{
+        font-size: 0.9rem;
+    }
+}
+@media (max-width: 520px){
+    #section_one{
+        min-height: 100vh;
+    }
+    .gridContainer{
+        display: flex;
+        flex-direction: column-reverse;
+        width: 100%;
+    }
+    .all_grid_sections{
+        min-height: 20em;
+    }
+    .timer{
+        min-height: 500px;
+    }
+    #svgContainer{
+        left: 50%;
+        top: 10%;
+        transform: translate(-50%);
+        /* margin-top: 1em; */
+    }
+    .startButtonFocus, .startButtonBreak{
+        left: 50%;
+        bottom: 12%;
+        transform: translate(-50%);
+    }
+    #upNextText{
+        left: 50%;
+        bottom: 5%;
+        transform: translate(-50%); 
+    }
+    .edit_optionsSettings h3{
+        display: none;
+    }
+    #settings_internal_svg{
+        margin: 1em;
+        margin-left: 1.6em;
+        display: block;
+        
+        
+    }
+    .minutes_indicatorContainer{
+        left: 50%;
+        top: 35%;
+        transform: translate(-50%);
+    }
+    .phones_Note{
+        display: block;
+    }
+}
