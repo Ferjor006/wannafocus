@@ -389,22 +389,3 @@ function updateCountdown2(){
         alarmSoundF();
     } 
 } 
-
-
-/* TAREAS
- Asegurate de entender el reinicio de la animación
- Crea la función que varie el volumen
- Crea las funciones de submit que realmente apliquen los cambios
-
- Extra: Considera cambiar el tiempo de duración de la animación para el default tone.
- 2do Extra: Considera cambiar el estilo de los inputs (tanto range como radio)
-
-*/
-
-/* Lo que he hecho
-Busque la tarea principal
-Acomodar las variables y funciones en orden
-Cree la función de variar volumen
-Cree la primera opción submit y depués decidi no usar submits, sino incluirlos a la prueba
-Es mejor dejar el audio largo
-*/
